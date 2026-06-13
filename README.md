@@ -2,6 +2,9 @@
 
 [![npm version](https://img.shields.io/npm/v/tokenx)](https://www.npmjs.com/package/tokenx)
 
+> [!NOTE]
+> This is a fork of [`tokenx`](https://github.com/johannschopplich/tokenx) by [Johann Schopplich](https://github.com/johannschopplich) ([original npm package](https://www.npmjs.com/package/tokenx)), with an added command-line interface. All credit for the original library goes to the upstream author. See [Acknowledgements](#acknowledgements).
+
 Fast and lightweight token count estimation for any LLM without requiring a full tokenizer. This library provides quick approximations that are good enough for most use cases while keeping your bundle size minimal.
 
 For advanced use cases requiring precise token counts, please use a full tokenizer like [`gpt-tokenizer`](https://github.com/niieani/gpt-tokenizer).
@@ -302,6 +305,10 @@ function splitByTokens(
 **Returns:**
 
 An array of text chunks, each containing approximately `tokensPerChunk` tokens.
+
+## Acknowledgements
+
+This project is a fork of [`tokenx`](https://github.com/johannschopplich/tokenx) created by [Johann Schopplich](https://github.com/johannschopplich). The original library — including its token estimation heuristics, benchmarks, and API — is entirely his work, available on [npm](https://www.npmjs.com/package/tokenx) and [GitHub](https://github.com/johannschopplich/tokenx). Huge thanks to Johann for releasing it under the permissive MIT license.
 
 ## License
 
