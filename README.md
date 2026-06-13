@@ -84,6 +84,67 @@ const customEstimate = estimateTokenCount(text, customOptions)
 console.log(`Custom estimate: ${customEstimate}`)
 ```
 
+## CLI
+
+`tokenx` ships with a command-line tool for estimating token counts of files, folders, or piped text — no install required:
+
+```bash
+# Count tokens in a single file
+npx tokenx README.md
+
+# Count every file in a folder (scanned recursively)
+npx tokenx ./docs
+
+# Count only the markdown documents in a folder, recursively
+npx tokenx ./docs --ext md
+
+# Glob patterns work too — quote them so your shell passes them through verbatim
+npx tokenx "src/**/*.{ts,tsx}"
+
+# ...or let your shell expand the glob, it works the same
+npx tokenx docs/**/*.md
+
+# Mix files, folders, and extension filters freely
+npx tokenx README.md ./docs ./src --ext md --ext ts
+
+# Pipe arbitrary text in
+echo "How many tokens is this?" | npx tokenx
+curl -s https://example.com | npx tokenx
+
+# Print just the grand total (handy for scripts)
+npx tokenx ./docs --ext md --total
+```
+
+Example output for a folder:
+
+```
+TOKENS  FILE
+ 1,722  README.md
+   164  docs/bench.md
+──────
+ 1,886  total (2 files)
+```
+
+If you use `tokenx` often, install it globally so you can drop the `npx` prefix:
+
+```bash
+npm install -g tokenx
+tokenx ./docs --ext md
+```
+
+### Options
+
+| Option | Description |
+| --- | --- |
+| `-e, --ext <ext>` | Only count files with this extension (repeatable, e.g. `--ext md --ext mdx`). Case-insensitive; the leading dot is optional. |
+| `-j, --json` | Output results as JSON. |
+| `-t, --total` | Print only the grand total token count. |
+| `--no-ignore` | Include `node_modules`, `.git`, and other normally-skipped directories. |
+| `-h, --help` | Show help. |
+| `-v, --version` | Show the version number. |
+
+By default, folder scans skip `node_modules` and version-control directories, and any binary files are detected and skipped automatically.
+
 ## API
 
 ### `estimateTokenCount`

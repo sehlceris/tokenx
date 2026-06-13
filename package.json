@@ -32,6 +32,9 @@
     }
   },
   "types": "./dist/index.d.mts",
+  "bin": {
+    "tokenx": "./dist/cli.mjs"
+  },
   "files": [
     "dist"
   ],
