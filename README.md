@@ -1,6 +1,9 @@
 # tokenx
 
-[![npm version](https://img.shields.io/npm/v/tokenx)](https://www.npmjs.com/package/tokenx)
+[![npm version](https://img.shields.io/npm/v/@sehlceris/tokenx)](https://www.npmjs.com/package/@sehlceris/tokenx)
+
+> [!NOTE]
+> This is a fork of [`tokenx`](https://github.com/johannschopplich/tokenx) by [Johann Schopplich](https://github.com/johannschopplich) ([original npm package](https://www.npmjs.com/package/tokenx)), with an added command-line interface. All credit for the original library goes to the upstream author. See [Acknowledgements](#acknowledgements).
 
 Fast and lightweight token count estimation for any LLM without requiring a full tokenizer. This library provides quick approximations that are good enough for most use cases while keeping your bundle size minimal.
 
@@ -39,19 +42,19 @@ Run the following command to add `tokenx` to your project.
 
 ```bash
 # npm
-npm install tokenx
+npm install @sehlceris/tokenx
 
 # pnpm
-pnpm add tokenx
+pnpm add @sehlceris/tokenx
 
 # yarn
-yarn add tokenx
+yarn add @sehlceris/tokenx
 ```
 
 ## Usage
 
 ```ts
-import { estimateTokenCount, isWithinTokenLimit, sliceByTokens, splitByTokens } from 'tokenx'
+import { estimateTokenCount, isWithinTokenLimit, sliceByTokens, splitByTokens } from '@sehlceris/tokenx'
 
 const text = 'Your text goes here.'
 
@@ -83,6 +86,75 @@ const customOptions = {
 const customEstimate = estimateTokenCount(text, customOptions)
 console.log(`Custom estimate: ${customEstimate}`)
 ```
+
+## CLI
+
+`@sehlceris/tokenx` ships with a command-line tool for estimating token counts of files, folders, or piped text — no install required. Run it through `npx` with the full package name:
+
+```bash
+npx @sehlceris/tokenx README.md
+```
+
+The command itself is `tokenx`. The examples below use that short form for readability — either prefix them with `npx @sehlceris/tokenx`, or [install globally](#install-globally) to use `tokenx` directly.
+
+```bash
+# Count tokens in a single file
+tokenx README.md
+
+# Count every file in a folder (scanned recursively)
+tokenx ./docs
+
+# Count only the markdown documents in a folder, recursively
+tokenx ./docs --ext md
+
+# Glob patterns work too — quote them so your shell passes them through verbatim
+tokenx "src/**/*.{ts,tsx}"
+
+# ...or let your shell expand the glob, it works the same
+tokenx docs/**/*.md
+
+# Mix files, folders, and extension filters freely
+tokenx README.md ./docs ./src --ext md --ext ts
+
+# Pipe arbitrary text in
+echo "How many tokens is this?" | tokenx
+curl -s https://example.com | tokenx
+
+# Print just the grand total (handy for scripts)
+tokenx ./docs --ext md --total
+```
+
+Example output for a folder:
+
+```
+TOKENS  FILE
+ 1,722  README.md
+   164  docs/bench.md
+──────
+ 1,886  total (2 files)
+```
+
+### Install globally
+
+If you use `tokenx` often, install it globally so you can drop the `npx` prefix:
+
+```bash
+npm install -g @sehlceris/tokenx
+tokenx ./docs --ext md
+```
+
+### Options
+
+| Option | Description |
+| --- | --- |
+| `-e, --ext <ext>` | Only count files with this extension (repeatable, e.g. `--ext md --ext mdx`). Case-insensitive; the leading dot is optional. |
+| `-j, --json` | Output results as JSON. |
+| `-t, --total` | Print only the grand total token count. |
+| `--no-ignore` | Include `node_modules`, `.git`, and other normally-skipped directories. |
+| `-h, --help` | Show help. |
+| `-v, --version` | Show the version number. |
+
+By default, folder scans skip `node_modules` and version-control directories, and any binary files are detected and skipped automatically.
 
 ## API
 
@@ -241,6 +313,10 @@ function splitByTokens(
 **Returns:**
 
 An array of text chunks, each containing approximately `tokensPerChunk` tokens.
+
+## Acknowledgements
+
+This project is a fork of [`tokenx`](https://github.com/johannschopplich/tokenx) created by [Johann Schopplich](https://github.com/johannschopplich). The original library — including its token estimation heuristics, benchmarks, and API — is entirely his work, available on [npm](https://www.npmjs.com/package/tokenx) and [GitHub](https://github.com/johannschopplich/tokenx). Huge thanks to Johann for releasing it under the permissive MIT license.
 
 ## License
 
